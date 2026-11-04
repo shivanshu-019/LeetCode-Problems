@@ -1,13 +1,15 @@
-/**
- * Definition for singly-linked list.
- * struct ListNode {
- *     int val;
- *     ListNode *next;
- *     ListNode() : val(0), next(nullptr) {}
- *     ListNode(int x) : val(x), next(nullptr) {}
- *     ListNode(int x, ListNode *next) : val(x), next(next) {}
- * };
- */
+#include <iostream>
+using namespace std;
+
+struct ListNode {
+    int val;
+    ListNode *next;
+
+    ListNode() : val(0), next(nullptr) {}
+    ListNode(int x) : val(x), next(nullptr) {}
+    ListNode(int x, ListNode *next) : val(x), next(next) {}
+};
+
 class Solution {
 public:
     ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
@@ -15,34 +17,100 @@ public:
         ListNode* tail = nullptr;
         int carry = 0;
 
-        while(l1!=nullptr || l2!=nullptr){
-            int a=0 , b=0;
+        while (l1 != nullptr || l2 != nullptr) {
+            int a = 0, b = 0;
 
-            if(l1!=nullptr){
-                a=l1->val;
-                l1=l1->next;
+            if (l1 != nullptr) {
+                a = l1->val;
+                l1 = l1->next;
             }
-            if(l2!=nullptr){
-                b=l2->val;
-                l2=l2->next;
-            }
-            int sum=a+b+carry;
-            carry = sum/10;
 
-            ListNode* node = new ListNode(sum%10);
+            if (l2 != nullptr) {
+                b = l2->val;
+                l2 = l2->next;
+            }
+
+            int sum = a + b + carry;
+            carry = sum / 10;
+
+            ListNode* node = new ListNode(sum % 10);
 
             if (head == nullptr) {
                 head = node;
                 tail = node;
-
-            }else{
-                tail->next=node;
-                tail=node;
+            } 
+            else {
+                tail->next = node;
+                tail = node;
             }
         }
-        if(carry!=0){
-            tail->next=new ListNode(carry);
+
+        if (carry != 0) {
+            tail->next = new ListNode(carry);
         }
+
         return head;
     }
 };
+
+// Function to create a linked list
+ListNode* createList(int n) {
+    ListNode* head = nullptr;
+    ListNode* tail = nullptr;
+
+    cout << "Enter " << n << " digits: ";
+
+    for (int i = 0; i < n; i++) {
+        int digit;
+        cin >> digit;
+
+        ListNode* node = new ListNode(digit);
+
+        if (head == nullptr) {
+            head = node;
+            tail = node;
+        } 
+        else {
+            tail->next = node;
+            tail = node;
+        }
+    }
+
+    return head;
+}
+
+// Function to display linked list
+void displayList(ListNode* head) {
+    while (head != nullptr) {
+        cout << head->val;
+
+        if (head->next != nullptr) {
+            cout << " -> ";
+        }
+
+        head = head->next;
+    }
+
+    cout << endl;
+}
+
+int main() {
+    Solution obj;
+
+    int n1, n2;
+
+    cout << "Enter number of nodes in first list: ";
+    cin >> n1;
+    ListNode* l1 = createList(n1);
+
+    cout << "Enter number of nodes in second list: ";
+    cin >> n2;
+    ListNode* l2 = createList(n2);
+
+    ListNode* result = obj.addTwoNumbers(l1, l2);
+
+    cout << "Sum: ";
+    displayList(result);
+
+    return 0;
+}
